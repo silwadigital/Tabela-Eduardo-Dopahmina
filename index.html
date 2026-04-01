@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silwa Tecnologia - Orçamento</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <style>
+        /* Reset e Fonte */
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f7f6; margin: 0; padding: 0; color: #333; }
+        .container { max-width: 1200px; margin: 40px auto; padding: 20px; }
+        
+        h1 { color: #007bff; font-weight: normal; margin-bottom: 5px; }
+        h1 strong { font-weight: bold; }
+        .subtitle { color: #666; font-size: 0.9em; margin-bottom: 30px; }
+
+        /* Grid Principal */
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Estilo dos Módulos (Checkboxes) */
+        .modules-list { display: flex; flex-direction: column; gap: 10px; }
+        
+        .module-item {
+            background: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #007bff;
+            border-right: 1px solid #ddd;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .module-item:hover { background-color: #f8faff; }
+        .module-item input[type="checkbox"] { margin-right: 10px; cursor: pointer; }
+        .module-name { font-weight: 600; font-size: 0.9em; color: #444;}
+        .price { color: #00bfff; font-weight: bold; font-size: 0.9em;}
+
+        /* Estilo dos Cards (Rádios) */
+        .card {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
+            height: fit-content;
+        }
+        .card h3 { color: #00bfff; margin-top: 0; font-size: 1.2em; margin-bottom: 20px; }
+        
+        .radio-item {
+            display: block;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            color: #555;
+            cursor: pointer;
+        }
+        .radio-item input[type="radio"] { margin-right: 8px; }
+        .radio-price { color: #00bfff; font-weight: bold; display: block; margin-left: 25px; margin-top: 2px;}
+
+        /* Total Section */
+        .total-section {
+            background: #fff;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #ddd;
+            text-align: center;
+            margin-top: 30px;
+            max-width: 380px;
+            margin-left: auto;
+            margin-right: auto;
+            border-top: 4px solid #00bfff;
+        }
+        .total-section h3 { color: #00bfff; margin: 0 0 10px 0; font-size: 1.5em; }
+        .total-price { font-size: 2.5em; color: #007bff; font-weight: bold; margin-bottom: 20px; }
+        .btn-solicitar {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        .btn-solicitar:hover { background-color: #0056b3; }
+
+        /* Responsividade */
+        @media (max-width: 900px) {
+            .grid-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tabela de preço <br><strong>Eduardo </strong></h1>
+        <p class="subtitle">Escolha os módulos necessários para o seu negócio.</p>
+        
+        <div class="grid-container">
+            
+            <div class="modules-list">
+                <label class="module-item">
+                    <div><input type="checkbox" class="calc-item" data-name="Cloud" data-price="53.90"><span class="module-name">Cloud</span></div>
+                    <span class="price">- R$53,90</span>
+                </label>
+                <label class="module-item">
+                    <div><input type="checkbox" class="calc-item" data-name="Módulo Estoque" data-price="65.00"><span class="module-name">Módulo Estoque</span></div>
+                    <span class="price">- R$65,00</span>
+                </label>
+                <label class="module-item">
+                    <div><input type="checkbox" class="calc-item" data-name="Módulo Fiscal" data-price="65.00"><span class="module-name">Módulo Fiscal</span></div>
+                    <span class="price">- R$65,00</span>
+                </label>
+                <label class="module-item">
+                    <div><input type="checkbox" class="calc-item" data-name="Módulo Financeiro" data-price="65.00"><span class="module-name">Módulo Financeiro</span></div>
+                    <span class="price">- R$65,00</span>
+                </label>
+                <label class="module-item">
+                    <div><input type="checkbox" class="calc-item" data-name="Módulo de Serviço" data-price="65.00"><span class="module-name">Módulo de Serviço</span></div>
+                    <span class="price">- R$65,00</span>
+                </label>
+                <label class="module-item">
+                    <div><input type="checkbox" class="calc-item" data-name="Integração iFood" data-price="10.00"><span class="module-name">Integração iFood</span></div>
+                    <span class="price">- R$10,00</span>
+                </label>
+                <label class="module-item">
+                    <div><input type="checkbox" class="calc-item" data-name="Fidelidade Legal" data-price="179.90"><span class="module-name">Fidelidade Legal</span></div>
+                    <span class="price">- R$179,90</span>
+                </label>
+                <label class="module-item">
+                    <div><input type="checkbox" class="calc-item" data-name="Módulo Conta Assinada" data-price="50.00"><span class="module-name">Módulo Conta Assinada</span></div>
+                    <span class="price">- R$50,00</span>
+                </label>
+                <label class="module-item">
+                    <div><input type="checkbox" class="calc-item" data-name="PDV Legal Fast" data-price="219.80"><span class="module-name">PDV Legal Fast</span></div>
+                    <span class="price">- R$219.80</span>
+                </label>
+                <label class="module-item">
+                    <div><input type="checkbox" class="calc-item" data-name="Mata Ficha" data-price="30.00"><span class="module-name">Mata Ficha</span></div>
+                    <span class="price">- R$30,00</span>
+                </label>
+                <label class="module-item">
+                    <div><input type="checkbox" class="calc-item" data-name="Validação de CPF" data-price="37.90"><span class="module-name">Validação de CPF</span></div>
+                    <span class="price">- R$37,90</span>
+                </label>
+                <label class="module-item">
+                    <div><input type="checkbox" class="calc-item" data-name="PDV Legal Full" data-price="488.10"><span class="module-name">PDV Legal Full</span></div>
+                    <span class="price">- R$488,10</span>
+                </label>
+                <label class="module-item">
+                    <div><input type="checkbox" class="calc-item" data-name="Certificado Digital" data-price="213.90"><span class="module-name">Certificado Digital</span></div>
+                    <span class="price">- R$213,90</span>
+                </label>
+            </div>
+
+            <div class="card">
+                <h3>PDV's</h3>
+                <label class="radio-item"><input type="radio" name="comandas" class="calc-item" data-name="PDVs - Nenhuma" data-price="0" checked> Nenhuma</label>
+                <label class="radio-item"><input type="radio" name="comandas" class="calc-item" data-name="PDVs - 1" data-price="35.50"> 1 - R$35,50</label>
+                <label class="radio-item"><input type="radio" name="comandas" class="calc-item" data-name="PDVs - 2" data-price="35.50"> 2 - R$35,50</label>
+                <label class="radio-item"><input type="radio" name="comandas" class="calc-item" data-name="PDVs - 3" data-price="92.50"> 3 - R$92.50</label>
+                <label class="radio-item"><input type="radio" name="comandas" class="calc-item" data-name="PDVs - 4" data-price="92.50"> 4 - R$92.50</label>
+                <label class="radio-item"><input type="radio" name="comandas" class="calc-item" data-name="PDVs - 5" data-price="92.50"> 5 - R$92.50</label>
+                <label class="radio-item"><input type="radio" name="comandas" class="calc-item" data-name="PDVs - 6" data-price="199.00"> 6 - R$199,00</label>
+                <label class="radio-item"><input type="radio" name="comandas" class="calc-item" data-name="PDVs - 7" data-price="199.00"> 7 - R$199,00</label>
+                <label class="radio-item"><input type="radio" name="comandas" class="calc-item" data-name="PDVs - 8" data-price="250.00"> 8 - R$250,00</label>
+                <label class="radio-item"><input type="radio" name="comandas" class="calc-item" data-name="PDVs - 9" data-price="250.00"> 9 - R$250,00</label>
+                <label class="radio-item"><input type="radio" name="comandas" class="calc-item" data-name="PDVs - 10" data-price="250.00"> 10 - R$250,00</label>
+            </div>
+            
+            <div class="card">
+                <h3>Planos Delivery Legal</h3>
+                <label class="radio-item">
+                    <input type="radio" name="planos" class="calc-item" data-name="Delivery - Não é necessário" data-price="0" checked> Não é necessário
+                </label>
+                <label class="radio-item">
+                    <input type="radio" name="planos" class="calc-item" data-name="Delivery - Plano 1" data-price="199.90"> Plano 1
+                    <span class="radio-price">Até 25k de Faturamento - R$199,90</span>
+                </label>
+                <label class="radio-item">
+                    <input type="radio" name="planos" class="calc-item" data-name="Delivery - Plano 2" data-price="279.90"> Plano 2
+                    <span class="radio-price">Acima de 25k de Faturamento - R$279,90</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="total-section">
+            <h3>Total</h3>
+            <div class="total-price" id="valor-total">R$ 0,00</div>
+            <button class="btn-solicitar" id="btn-gerar-pdf">GERAR ORÇAMENTO EM PDF</button>
+        </div>
+    </div>
+
+    <script>
+        // --- LÓGICA DE CÁLCULO ---
+        const inputs = document.querySelectorAll('.calc-item');
+        const displayTotal = document.getElementById('valor-total');
+        let totalGlobal = 0; // Variável para armazenar o total para o PDF
+
+        function calcularTotal() {
+            let total = 0;
+            inputs.forEach(input => {
+                if (input.checked) {
+                    total += parseFloat(input.getAttribute('data-price'));
+                }
+            });
+
+            totalGlobal = total; // Atualiza a variável global
+
+            const valorFormatado = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            displayTotal.textContent = valorFormatado;
+        }
+
+        inputs.forEach(input => {
+            input.addEventListener('change', calcularTotal);
+        });
+
+        calcularTotal();
+
+        // --- LÓGICA DE GERAÇÃO DE PDF ---
+        document.getElementById('btn-gerar-pdf').addEventListener('click', function() {
+            // Inicializa o jsPDF
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Configuração de Cabeçalho do PDF
+            doc.setFontSize(22);
+            doc.setTextColor(0, 123, 255);
+            doc.text("SILWA TECNOLOGIA", 14, 20);
+
+            doc.setFontSize(14);
+            doc.setTextColor(51, 51, 51);
+            doc.text("Orçamento de Serviços e Módulos", 14, 30);
+
+            // Data atual
+            const dataAtual = new Date().toLocaleDateString('pt-BR');
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.text(`Data do orçamento: ${dataAtual}`, 14, 38);
+
+            // Capturar dados selecionados para a tabela
+            const tableData = [];
+            
+            inputs.forEach(input => {
+                if (input.checked) {
+                    const price = parseFloat(input.getAttribute('data-price'));
+                    // Registra na tabela os itens que têm valor maior que 0 ou que você quer que apareça
+                    if (price > 0 || input.getAttribute('data-name').includes('Cloud')) { 
+                        const name = input.getAttribute('data-name');
+                        const formattedPrice = price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                        tableData.push([name, formattedPrice]);
+                    }
+                }
+            });
+
+            // Geração da Tabela no PDF
+            doc.autoTable({
+                startY: 45,
+                head: [['Descrição do Item', 'Valor Mensal']],
+                body: tableData,
+                theme: 'striped',
+                headStyles: { fillColor: [0, 123, 255] },
+                styles: { fontSize: 11 }
+            });
+
+            // Adicionar Total no final
+            const finalY = doc.lastAutoTable.finalY || 45;
+            const totalFormatado = totalGlobal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            
+            doc.setFontSize(14);
+            doc.setFont("helvetica", "bold");
+            doc.setTextColor(0, 0, 0);
+            doc.text(`Valor Total: ${totalFormatado}`, 14, finalY + 15);
+
+            // Mensagem de rodapé
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+            doc.setTextColor(150, 150, 150);
+            doc.text("Este é um orçamento gerado automaticamente. Valores sujeitos a alteração.", 14, finalY + 25);
+
+            // Baixar o arquivo
+            doc.save('Orcamento_Silwa_Tecnologia.pdf');
+        });
+    </script>
+</body>
+</html>
